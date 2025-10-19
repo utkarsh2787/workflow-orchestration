@@ -1,5 +1,5 @@
 from datetime import datetime
-from sqlalchemy import Column, DateTime, ForeignKey, Integer, String
+from sqlalchemy import JSON, Column, DateTime, ForeignKey, Integer, String
 from app.db.session import Base
 from sqlalchemy.orm import relationship
 
@@ -12,6 +12,7 @@ class Run(Base):
     status = Column(String(50), default="running")
     started_at = Column(DateTime, default=datetime.utcnow)
     ended_at = Column(DateTime)
-
+    inputs = Column(JSON, nullable=True)
+    outputs = Column(JSON, nullable=True)
     workflow = relationship("Workflow", back_populates="runs")
     logs = relationship("Log", back_populates="run")
