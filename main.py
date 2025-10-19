@@ -18,7 +18,7 @@ app = FastAPI(
 @app.on_event("startup")
 async def startup_event():
     """Initialize database tables on startup"""
-    create_tables()
+    # create_tables()
     print("Database tables created successfully!")
 
 # Health check endpoint

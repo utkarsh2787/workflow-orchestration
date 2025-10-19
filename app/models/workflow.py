@@ -16,3 +16,12 @@ class Workflow(Base):
     creator = relationship("User", back_populates="workflows")
     tasks = relationship("Task", back_populates="workflow")
     runs = relationship("Run", back_populates="workflow")
+
+
+def create_workflow(session, name: str, description: str | None = None, created_by: int | None = None, status: str = "draft") -> Workflow:
+    """Create and persist a Workflow."""
+    wf = Workflow(name=name, description=description, created_by=created_by, status=status)
+    session.add(wf)
+    session.commit()
+    session.refresh(wf)
+    return wf

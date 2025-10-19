@@ -20,3 +20,22 @@ class Task(Base):
 
     workflow = relationship("Workflow", back_populates="tasks")
     logs = relationship("Log", back_populates="task")
+    
+
+def create_task(session, name: str, command: str | None, order: int | None, workflow_id: int | None, type: str, config: dict | None = None, inputs: dict | None = None, outputs: dict | None = None, status: str = "pending") -> Task:
+    task = Task(
+        name=name,
+        command=command,
+        order=order,
+        workflow_id=workflow_id,
+        type=type,
+        config=config,
+        inputs=inputs,
+        outputs=outputs,
+        status=status,
+    )
+    session.add(task)
+    session.commit()
+    session.refresh(task)
+    return task
+

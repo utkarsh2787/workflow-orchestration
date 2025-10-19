@@ -12,3 +12,12 @@ class User(Base):
     created_at = Column(DateTime, default=datetime.utcnow)
 
     workflows = relationship("Workflow", back_populates="creator")
+
+
+def create_user(session, name: str, email: str) -> User:
+    """Create and persist a User."""
+    user = User(name=name, email=email)
+    session.add(user)
+    session.commit()
+    session.refresh(user)
+    return user

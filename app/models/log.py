@@ -15,3 +15,12 @@ class Log(Base):
 
     run = relationship("Run", back_populates="logs")
     task = relationship("Task", back_populates="logs")
+
+
+def create_log(session, run_id: int, task_id: int, message: str) -> Log:
+    """Create a new log entry."""
+    new_log = Log(run_id=run_id, task_id=task_id, message=message)
+    session.add(new_log)
+    session.commit()
+    session.refresh(new_log)
+    return new_log
