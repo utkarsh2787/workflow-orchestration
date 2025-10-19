@@ -1,6 +1,6 @@
 from dotenv import load_dotenv
 load_dotenv()
-
+from app.create_table import create_tables
 from fastapi import FastAPI, Depends, HTTPException
 from sqlalchemy.orm import Session
 from sqlalchemy import text
@@ -18,7 +18,7 @@ app = FastAPI(
 @app.on_event("startup")
 async def startup_event():
     """Initialize database tables on startup"""
-    Base.metadata.create_all(bind=engine)
+    create_tables()
     print("Database tables created successfully!")
 
 # Health check endpoint
@@ -46,7 +46,7 @@ async def check_database_connection(db: Session = Depends(get_db)):
 # Entry point for running the application
 if __name__ == "__main__":
     uvicorn.run(
-        "app.main:app",
+        "main:app",
         host="0.0.0.0",
         port=8000,
         reload=True,
