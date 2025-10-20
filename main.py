@@ -6,6 +6,7 @@ from sqlalchemy.orm import Session
 from sqlalchemy import text
 from app.db.session import engine, get_db, Base
 import uvicorn
+from app.api.v1 import workflow
 
 # Create FastAPI application
 app = FastAPI(
@@ -21,6 +22,7 @@ async def startup_event():
     # create_tables()
     print("Database tables created successfully!")
 
+app.include_router(workflow.router)
 # Health check endpoint
 @app.get("/")
 async def root():
