@@ -31,8 +31,8 @@ def register_user(
         key="access_token",
         value=token,
         httponly=True,
-        secure=True,
-        samesite="lax",
+        secure=False,
+        samesite="none",
         max_age=18000,
     )
 
@@ -55,8 +55,8 @@ def login_user(data: UserLogin, response: Response, session: Session = Depends(g
         key="access_token",
         value=token,
         httponly=True,
-        secure=True,
-        samesite="lax",
+        secure=False,
+        samesite="none",
         max_age=1800,
     )
 

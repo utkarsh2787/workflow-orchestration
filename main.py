@@ -1,4 +1,5 @@
 from dotenv import load_dotenv
+from fastapi.middleware.cors import CORSMiddleware
 
 load_dotenv()
 from app.create_table import create_tables
@@ -17,7 +18,17 @@ app = FastAPI(
     version="1.0.0",
 )
 
+origins = [
+    "http://localhost:3000",      # for local Next.js dev
+]
 
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,          # or ["*"] to allow all (not recommended for prod)
+    allow_credentials=True,
+    allow_methods=["*"],            # allow all HTTP methods
+    allow_headers=["*"],            # allow all headers
+)
 # Create database tables
 @app.on_event("startup")
 async def startup_event():
@@ -58,4 +69,4 @@ async def check_database_connection(db: Session = Depends(get_db)):
 
 # Entry point for running the application
 if __name__ == "__main__":
-    uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True, log_level="info")
+    uvicorn.run("main:app", host="0.0.0.0", port=3001, reload=True, log_level="info")
