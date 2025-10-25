@@ -14,6 +14,10 @@ if not SQLALCHEMY_DATABASE_URL:
 
 engine = create_engine(
     SQLALCHEMY_DATABASE_URL,
+     pool_pre_ping=True,       # tests connection before using it
+    pool_recycle=1800,        # recycle connections every 30 minutes
+    pool_size=10,             # optional: max connections in pool
+    max_overflow=20,
     connect_args={
         "ssl_ca": SSL_CERT,
     },

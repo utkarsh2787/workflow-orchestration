@@ -24,6 +24,14 @@ def create_user(session, name: str, email: str, password: str) -> User:
     session.refresh(user)
     return user
 
+def create_user_google(session, name: str, email: str) -> User:
+    """Create and persist a User."""
+    user = User(name=name, email=email, password_hash="")
+    session.add(user)
+    session.commit()
+    session.refresh(user)
+    return user
+
 
 def get_user_by_email(session, email: str) -> User:
     return session.query(User).filter(User.email == email).first()

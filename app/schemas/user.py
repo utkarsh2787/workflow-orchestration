@@ -6,6 +6,10 @@ class UserCreate(BaseModel):
     email: str
     password: str
     
+class UserGoogleCreate(BaseModel):
+    name: str
+    email: str
+    
 class UserLogin(BaseModel):
     email: str
     password: str
