@@ -25,3 +25,6 @@ def create_workflow(session, name: str, description: str | None = None, created_
     session.commit()
     session.refresh(wf)
     return wf
+
+def get_workflow_by_id(session, workflow_id: int) -> Workflow:
+    return session.query(Workflow).filter(Workflow.id == workflow_id).first()
