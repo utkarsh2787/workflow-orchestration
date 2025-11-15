@@ -3,6 +3,7 @@ from sqlalchemy import JSON, Column, DateTime, ForeignKey, Integer, String
 from app.db.session import Base
 from sqlalchemy.orm import relationship
 
+
 class Task(Base):
     __tablename__ = "tasks"
 
@@ -17,12 +18,25 @@ class Task(Base):
     config = Column(JSON, nullable=True)
     inputs = Column(JSON, nullable=True)
     outputs = Column(JSON, nullable=True)
+    output_schema = Column(JSON, nullable=True)
 
     workflow = relationship("Workflow", back_populates="tasks")
     logs = relationship("Log", back_populates="task")
-    
 
-def create_task(session, name: str, command: str | None, order: int | None, workflow_id: int | None, type: str, config: dict | None = None, inputs: dict | None = None, outputs: dict | None = None, status: str = "pending") -> Task:
+
+def create_task(
+    session,
+    name: str,
+    command: str | None,
+    order: int | None,
+    workflow_id: int | None,
+    type: str,
+    config: dict | None = None,
+    inputs: dict | None = None,
+    outputs: dict | None = None,
+    output_schema: dict | None = None,
+    status: str = "pending",
+) -> Task:
     task = Task(
         name=name,
         command=command,
@@ -33,9 +47,14 @@ def create_task(session, name: str, command: str | None, order: int | None, work
         inputs=inputs,
         outputs=outputs,
         status=status,
+        output_schema=output_schema,
     )
     session.add(task)
     session.commit()
     session.refresh(task)
     return task
 
+
+def del_task_wk_id(session, workflow_id: int):
+    session.query(Task).filter(Task.workflow_id == workflow_id).delete()
+    session.commit()

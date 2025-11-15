@@ -8,7 +8,7 @@ from sqlalchemy.orm import Session
 from sqlalchemy import text
 from app.db.session import engine, get_db, Base
 import uvicorn
-from app.api.v1 import workflow, user
+from app.api.v1 import workflow, user, tasks
 
 
 # Create FastAPI application
@@ -40,6 +40,7 @@ async def startup_event():
 
 app.include_router(user.router)
 app.include_router(workflow.router)
+app.include_router(tasks.router)
 
 
 # Health check endpoint
